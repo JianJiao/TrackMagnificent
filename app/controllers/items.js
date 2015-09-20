@@ -1,4 +1,4 @@
-var Item, getDates;
+var Item, errorCallback, getDates, getTodayItems;
 
 Item = require('../models/Item');
 
@@ -18,7 +18,35 @@ getDates = function(date) {
   })();
 };
 
+getTodayItems = function(callback) {
+  var today, tomorrow;
+  today = new Date();
+  today.setHours(0, 0, 0, 0);
+  tomorrow = new Date(today.toString());
+  tomorrow.setDate(today.getDate() + 1);
+  return Item.find({
+    dates: {
+      $gt: today,
+      $lt: tomorrow
+    }
+  }, callback);
+};
+
+errorCallback = function(err, res) {
+  res.send(err);
+  return res.statusCode = 500;
+};
+
 module.exports = {
+  home: function(req, res) {
+    return getTodayItems(function(err, items) {
+      if (!err) {
+        return res.render('index', items);
+      } else {
+        return errCallbac(err, res);
+      }
+    });
+  },
   create: function(req, res) {
     var attrs, date, dates, item;
     date = new Date();
@@ -34,24 +62,17 @@ module.exports = {
         res.send(item);
         return res.statusCode = 201;
       } else {
-        res.send(err);
-        return res.statusCode = 500;
+        return errCallback(err, res);
       }
     });
   },
-  getTodayItems: function(req, res) {
-    var today, tomorrow;
-    today = new Date();
-    today.setHours(0, 0, 0, 0);
-    tomorrow = new Date(today.toString());
-    tomorrow.setDate(today.getDate() + 1);
-    return Item.find({
-      dates: {
-        $gt: today,
-        $lt: tomorrow
+  todayItems: function(req, res) {
+    return getTodayItems(function(err, items) {
+      if (!err) {
+        return res.send(items);
+      } else {
+        return errCallback(err, res);
       }
-    }, function(err, items) {
-      return res.send(items);
     });
   }
 };

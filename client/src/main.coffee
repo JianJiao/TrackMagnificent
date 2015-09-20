@@ -1,3 +1,4 @@
-test = require('./models/test.coffee')
+AppView = require './views/AppView.coffee'
 
-console.log test
+
+appView = new AppView()

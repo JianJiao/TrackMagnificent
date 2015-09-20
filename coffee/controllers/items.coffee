@@ -10,8 +10,32 @@ getDates = (date) ->
     aDate.setDate aDate.getDate() + elem
     aDate
 
+getTodayItems = (callback) ->
+  today = new Date()
+  today.setHours 0, 0, 0, 0
+  tomorrow = new Date today.toString()
+  tomorrow.setDate today.getDate() + 1
+
+  Item.find
+    dates:
+      $gt: today
+      $lt: tomorrow
+  , callback
+
+errorCallback = (err, res) ->
+  res.send err
+  res.statusCode = 500
+
 # Item model's CRUD controller.
 module.exports =
+  home: (req, res) ->
+    getTodayItems (err, items) ->
+      if not err
+        res.render 'index', items
+      else
+        errCallbac(err, res)
+
+
   # Creates new Item with data from `req.body`
   create: (req, res) ->
     date = new Date()
@@ -26,22 +50,15 @@ module.exports =
         res.send item
         res.statusCode = 201
       else
-        res.send err
-        res.statusCode = 500
+        errCallback(err, res)
 
 
-  getTodayItems: (req, res) ->
-    today = new Date()
-    today.setHours 0, 0, 0, 0
-    tomorrow = new Date today.toString()
-    tomorrow.setDate today.getDate() + 1
-
-    Item.find
-      dates:
-        $gt: today
-        $lt: tomorrow
-    , (err, items) ->
-      res.send items
+  todayItems: (req, res) ->
+    getTodayItems (err, items) ->
+      if not err
+        res.send items
+      else
+        errCallback(err, res)
 
 
 
