@@ -76,7 +76,6 @@ module.exports = function(grunt) {
                     'build/app.js': ['client/src/main.coffee']
                 },
                 options: {
-                    debug: true,
                     transform: ['hbsfy', 'coffeeify'],
                     external: ['jquery', 'underscore', 'backbone', 'backbone.marionette']
                 }
@@ -156,7 +155,7 @@ module.exports = function(grunt) {
         // for changes to the front-end code
         watch: {
             scripts: {
-                files: ['client/templates/*.hbs', 'client/src/**/*.js'],
+                files: ['client/templates/*.hbs', 'client/src/**/*.coffee'],
                 tasks: ['clean:dev', 'browserify:app', 'concat', 'copy:dev']
             },
             less: {
