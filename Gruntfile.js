@@ -23,6 +23,21 @@ module.exports = function(grunt) {
             prod: ['dist']
         },
 
+        coffee: {
+            compile: {
+                options: {
+                    bare: true,
+                    sourceMap: true,
+                },
+                expand: true,
+                flatten: false,
+                cwd: 'client',
+                src: ['**/*.coffee'],
+                dest: 'build',
+                ext: '.js',
+            }
+        },
+
         browserify: {
             vendor: {
                 src: ['client/requires/**/*.js'],
@@ -58,17 +73,17 @@ module.exports = function(grunt) {
             },
             app: {
                 files: {
-                    'build/app.js': ['client/src/main.js']
+                    'build/app.js': ['client/src/main.coffee']
                 },
                 options: {
-                    transform: ['hbsfy'],
+                    transform: ['hbsfy', 'coffeeify'],
                     external: ['jquery', 'underscore', 'backbone', 'backbone.marionette']
                 }
             },
             test: {
                 files: {
                     'build/tests.js': [
-                        'client/spec/**/*.test.js'
+                        'client/spec/**/*.test.coffee'
                     ]
                 },
                 options: {
