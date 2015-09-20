@@ -76,6 +76,7 @@ module.exports = function(grunt) {
                     'build/app.js': ['client/src/main.coffee']
                 },
                 options: {
+                    debug: true,
                     transform: ['hbsfy', 'coffeeify'],
                     external: ['jquery', 'underscore', 'backbone', 'backbone.marionette']
                 }
