@@ -31,9 +31,9 @@ module.exports = function(grunt) {
                 },
                 expand: true,
                 flatten: false,
-                cwd: 'client',
+                cwd: 'coffee',
                 src: ['**/*.coffee'],
-                dest: 'build',
+                dest: 'app',
                 ext: '.js',
             }
         },
