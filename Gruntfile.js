@@ -170,7 +170,11 @@ module.exports = function(grunt) {
             karma: {
                 files: ['build/tests.js'],
                 tasks: ['jshint:test', 'karma:watcher:run']
-            }
+            },
+            coffee: {
+                files: ['coffee/**/*.coffee'],
+                tasks: ['coffee:compile'],
+            },
         },
 
         // for changes to the node code
@@ -179,7 +183,7 @@ module.exports = function(grunt) {
                 options: {
                     file: 'server.js',
                     nodeArgs: ['--debug'],
-                    watchedFolders: ['controllers', 'app'],
+                    watchedFolders: ['app'],
                     env: {
                         PORT: '3300'
                     }
@@ -214,9 +218,10 @@ module.exports = function(grunt) {
 
         concurrent: {
             dev: {
-                tasks: ['nodemon:dev', 'shell:mongo', 'watch:scripts', 'watch:less', 'watch:test'],
+                tasks: ['nodemon:dev', 'shell:mongo', 'watch:scripts', 'watch:less', 'watch:test', 'watch:coffee'],
                 options: {
-                    logConcurrentOutput: true
+                    logConcurrentOutput: true,
+                    limit: 6,
                 }
             },
             test: {
