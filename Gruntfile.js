@@ -142,7 +142,7 @@ module.exports = function(grunt) {
         uglify: {
             compile: {
                 options: {
-                    compress: true,
+                    compress: {},
                     verbose: true
                 },
                 files: [{
