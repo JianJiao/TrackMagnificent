@@ -31,8 +31,16 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
+db_name = 'trackmagnificent';
+//provide a sensible default for local development
+mongodb_connection_string = 'mongodb://127.0.0.1:27017/' + db_name;
+//take advantage of openshift env vars when available:
+if(process.env.OPENSHIFT_MONGODB_DB_URL){
+  mongodb_connection_string = process.env.OPENSHIFT_MONGODB_DB_URL + db_name;
+}
+
 //connect to the db server:
-mongoose.connect('mongodb://admin:KWvjwlTE9EAB@localhost/trackmagnificent');
+mongoose.connect(mongodb_connection_string);
 mongoose.connection.on('open', function() {
     console.log("Connected to Mongoose...");
 
