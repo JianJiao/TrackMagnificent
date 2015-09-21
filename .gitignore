@@ -3,3 +3,4 @@ build/*
 bower_components/*
 .DS_Store
 public/*
+todo.md

@@ -31,7 +31,9 @@ module.exports =
   home: (req, res) ->
     getTodayItems (err, items) ->
       if not err
-        res.render 'index', items
+        items = ({content: item.content} for item in items)
+        itemsStr = JSON.stringify(items)
+        res.render 'index', {itemsStr: itemsStr}
       else
         errCallbac(err, res)
 

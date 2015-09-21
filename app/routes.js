@@ -6,7 +6,7 @@ items = require('./controllers/items');
 
 module.exports.initialize = function(app) {
   app.get('/', items.home);
-  app.post('/api/items/create', items.create);
+  app.post('/api/items', items.create);
   return app.get('/api/items/todayItems', items.todayItems);
 };
 

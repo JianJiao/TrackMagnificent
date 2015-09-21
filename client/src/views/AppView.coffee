@@ -3,12 +3,11 @@ ItemsView = require './ItemsView.coffee'
 
 class AppView extends Backbone.View
   initialize: ->
-    console.log 'ok?'
+    # jquery converts the str to JSON obj for you
     itemsJSON = $('.items').data('items')
-    console.log itemsJSON
     items = new Items(itemsJSON)
     @itemsView = new ItemsView
       collection: items
-    console.log 'should remove source map'
+    @itemsView.render()
 
 module.exports = AppView

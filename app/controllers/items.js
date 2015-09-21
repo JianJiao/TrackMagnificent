@@ -40,8 +40,23 @@ errorCallback = function(err, res) {
 module.exports = {
   home: function(req, res) {
     return getTodayItems(function(err, items) {
+      var item, itemsStr;
       if (!err) {
-        return res.render('index', items);
+        items = (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = items.length; i < len; i++) {
+            item = items[i];
+            results.push({
+              content: item.content
+            });
+          }
+          return results;
+        })();
+        itemsStr = JSON.stringify(items);
+        return res.render('index', {
+          itemsStr: itemsStr
+        });
       } else {
         return errCallbac(err, res);
       }
