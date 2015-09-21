@@ -32,7 +32,7 @@ if ('development' == app.get('env')) {
 }
 
 //connect to the db server:
-mongoose.connect('mongodb://localhost/MyApp');
+mongoose.connect('mongodb://admin:KWvjwlTE9EAB@localhost/trackmagnificent');
 mongoose.connection.on('open', function() {
     console.log("Connected to Mongoose...");
 
