@@ -24,11 +24,14 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('some-secret-value-here'));
 app.use(app.router);
-app.use('/', express.static(path.join(__dirname, 'public')));
 
-// development only
+// different mode
 if ('development' == app.get('env')) {
+    app.use('/', express.static(path.join(__dirname, 'public')));
     app.use(express.errorHandler());
+    console.log('development mode');
+}else{
+    app.use('/', express.static(path.join(__dirname, 'dist')));
 }
 
 db_name = 'trackmagnificent';
