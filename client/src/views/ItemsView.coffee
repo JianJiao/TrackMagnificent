@@ -4,7 +4,7 @@ class ItemsView extends Backbone.View
   el: '.items'
 
   events: ->
-    'click button': 'createOne'
+    'click .create': 'createOne'
 
   initialize: ->
     @subviews = []

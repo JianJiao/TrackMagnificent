@@ -4,5 +4,11 @@ class Items extends Backbone.Collection
   model: Item
   url: '/api/items'
 
+  initialize: ->
+    @on 'change:completed', (model) =>
+      console.log 'get it'
+      if model.get 'completed'
+        @remove model
+
 
 module.exports = Items

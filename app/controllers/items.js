@@ -1,6 +1,10 @@
-var Item, errorCallback, getDates, getTodayItems;
+var Item, _, completedItems, errorCallback, getDates, getTodayItems;
 
 Item = require('../models/Item');
+
+completedItems = require('../models/completedItems');
+
+_ = require('underscore');
 
 getDates = function(date) {
   var aDate, arr, dates, elem;
@@ -26,10 +30,21 @@ getTodayItems = function(callback) {
   tomorrow.setDate(today.getDate() + 1);
   return Item.find({
     dates: {
-      $gt: today,
-      $lt: tomorrow
+      $elemMatch: {
+        $gt: today,
+        $lt: tomorrow
+      }
     }
-  }, callback);
+  }, (function(_this) {
+    return function(err, items) {
+      if (!err) {
+        console.log(items);
+        return callback(err, items);
+      } else {
+        return errCallback(err, res);
+      }
+    };
+  })(this));
 };
 
 errorCallback = function(err, res) {
@@ -47,9 +62,7 @@ module.exports = {
           results = [];
           for (i = 0, len = items.length; i < len; i++) {
             item = items[i];
-            results.push({
-              content: item.content
-            });
+            results.push(_.pick(item, '_id', 'content'));
           }
           return results;
         })();
@@ -58,7 +71,7 @@ module.exports = {
           itemsStr: itemsStr
         });
       } else {
-        return errCallbac(err, res);
+        return errCallback(err, res);
       }
     });
   },
@@ -89,6 +102,12 @@ module.exports = {
         return errCallback(err, res);
       }
     });
+  },
+  test: function(req, res) {
+    console.log(req.body);
+    if (req.body.completed) {
+      return completedItems.items.push;
+    }
   }
 };
 

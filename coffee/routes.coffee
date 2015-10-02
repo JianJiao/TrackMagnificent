@@ -5,6 +5,8 @@ module.exports.initialize = (app) ->
   app.get '/', items.home
   app.post '/api/items', items.create
   app.get '/api/items/todayItems', items.todayItems
+  app.put '/api/items/:id', items.test
+
 
 
 

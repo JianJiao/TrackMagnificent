@@ -1,8 +1,10 @@
 Item = require '../models/Item'
+completedItems = require '../models/completedItems'
+_ = require 'underscore'
 
 # controller
 
-# static functions
+# private functions
 getDates = (date) ->
   arr = [0, 1, 2, 4, 7, 15, 30]
   dates = for elem in arr
@@ -18,9 +20,19 @@ getTodayItems = (callback) ->
 
   Item.find
     dates:
-      $gt: today
-      $lt: tomorrow
-  , callback
+      $elemMatch:
+        $gt: today
+        $lt: tomorrow
+  , (err, items) =>
+    if not err
+      # filter out completed items
+      # completed = completedItems.getItemsId()
+      # items = _.difference items, completed
+      console.log items
+      callback(err, items)
+    else
+      errCallback err, res
+
 
 errorCallback = (err, res) ->
   res.send err
@@ -31,11 +43,11 @@ module.exports =
   home: (req, res) ->
     getTodayItems (err, items) ->
       if not err
-        items = ({content: item.content} for item in items)
+        items = (_.pick(item, '_id', 'content') for item in items)
         itemsStr = JSON.stringify(items)
         res.render 'index', {itemsStr: itemsStr}
       else
-        errCallbac(err, res)
+        errCallback(err, res)
 
 
   # Creates new Item with data from `req.body`
@@ -61,6 +73,20 @@ module.exports =
         res.send items
       else
         errCallback(err, res)
+
+  test: (req, res) ->
+    console.log req.body
+    if req.body.completed
+      completedItems.items.push
+
+
+
+
+  # updateCompleted: (req, res, next) ->
+  #   console.log 'got here'
+  #   completedItems.updateItems()
+  #   next()
+
 
 
 
