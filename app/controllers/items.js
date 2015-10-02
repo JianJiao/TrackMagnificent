@@ -37,7 +37,21 @@ getTodayItems = function(callback) {
     }
   }, (function(_this) {
     return function(err, items) {
+      var completed, item;
       if (!err) {
+        completed = completedItems.getItemsId();
+        items = (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = items.length; i < len; i++) {
+            item = items[i];
+            if (!completed[item._id]) {
+              results.push(item);
+            }
+          }
+          return results;
+        })();
+        console.log('you will receive this');
         console.log(items);
         return callback(err, items);
       } else {
@@ -106,7 +120,9 @@ module.exports = {
   test: function(req, res) {
     console.log(req.body);
     if (req.body.completed) {
-      return completedItems.items.push;
+      console.log(req.body._id);
+      completedItems.add(req.body._id);
+      return res.send(204);
     }
   }
 };

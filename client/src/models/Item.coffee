@@ -2,6 +2,7 @@ class Item extends Backbone.Model
   idAttribute: '_id'
 
   done: =>
+    console.log 'gotyou'
     @save {completed: true}, {wait: true}
     # note that trigger is synchronous
     # @trigger 'done', @

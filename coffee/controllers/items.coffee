@@ -26,9 +26,8 @@ getTodayItems = (callback) ->
   , (err, items) =>
     if not err
       # filter out completed items
-      # completed = completedItems.getItemsId()
-      # items = _.difference items, completed
-      console.log items
+      completed = completedItems.getItemsId()
+      items = (item for item in items when not completed[item._id])
       callback(err, items)
     else
       errCallback err, res
@@ -74,11 +73,13 @@ module.exports =
       else
         errCallback(err, res)
 
-  test: (req, res) ->
-    console.log req.body
+  update: (req, res) ->
     if req.body.completed
-      completedItems.items.push
-
+      completedItems.add req.body._id
+      res.send 204
+    else
+      # to implement
+      res.send 404
 
 
 

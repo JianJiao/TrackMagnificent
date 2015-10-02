@@ -24,7 +24,6 @@ class ItemsView extends Backbone.View
   createOne: ->
     content = @.$('input').val()
     item = @collection.create({content: content})
-    console.log item
 
   render: ->
     for view in @subviews

@@ -1,18 +1,21 @@
 # singleton
 completedItems =
-  itemsId: []
+  itemsId: {} # a set
   date: new Date()
 
   updateItems: ->
-    console.log 'called'
     today = new Date()
     today.setHours 0, 0, 0, 0
     @date.setHours 0, 0, 0, 0
     if today.valueOf() isnt @date.valueOf()
-      @items = []
+      @itemsId = {}
 
   getItemsId: ->
     @updateItems()
     @itemsId
+
+  # add ids of completed items to the set
+  add: (id) ->
+    @itemsId[id] = 1
 
 module.exports = completedItems

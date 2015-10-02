@@ -6,7 +6,6 @@ class Items extends Backbone.Collection
 
   initialize: ->
     @on 'change:completed', (model) =>
-      console.log 'get it'
       if model.get 'completed'
         @remove model
 
